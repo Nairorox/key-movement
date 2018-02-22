@@ -46,7 +46,7 @@ body{
 .photo{
 	width: 20vw;
 	height: 20vw;
-	background-image: url("face.jpeg");
+	background-image: url("../images/face.jpeg");
 	background-position:center 0;
 	background-size: 20vw 20vw;
 	border-radius:100%;
@@ -55,10 +55,35 @@ body{
 	transition: all 1s;
 	opacity: 0.5;
 	transform:translate(-20vw, 0px) rotate(40deg);
+	display:block;
 }
 
 .photo:hover{
 	border-color:white;
+}
+
+.photo:hover >.overlay{
+	opacity:1;
+}
+
+.overlay{
+	background-color: rgba(255, 255, 255, 1);
+	border:solid white;
+	height:100%;
+	width:100%;
+	border-radius:100%;
+	background-image: url('../images/GitHub-Mark-120px-plus.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	opacity:0;
+	transition:opacity 1s;
+}
+
+.overlay > a{
+	position:absolute;
+	width:100%;
+	height:100%;
+		border-radius:100%;
 }
 
 .controls{
@@ -73,6 +98,8 @@ body{
 	vertical-align: middle;
 	align-items: center;
   	justify-content: center;
+  	user-select: none;
+  	cursor:pointer;
 }
 
 

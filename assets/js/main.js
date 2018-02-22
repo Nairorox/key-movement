@@ -1,3 +1,9 @@
+/*
+	Designed and Coded by Damian Nowakowski (Nairorox)
+	https://github.com/Nairorox
+	face: https://www.pexels.com/photo/adult-business-businessman-close-up-428339/
+*/
+
 const body = document.querySelector('body');
 const wrapper = document.querySelector('.wrapper');
 const pages = document.querySelectorAll('.page');
@@ -65,7 +71,7 @@ const movement = {
 	ready: true,
 	curX: 1,
 	curY: 2,
-	siteMap:[
+	siteMap:[	// 1 represents field for page
 	[false, 1, false],
 	[false,1,false],
 	[1,1,1],
@@ -159,20 +165,66 @@ function keyboardMove(e){
 }
 
 document.addEventListener('keyup', keyboardMove);
-document.querySelectorAll('.controls').forEach(control =>{
-	control.addEventListener('click', function(){
-		movement[this.dataset.direction]();
-	})
-})
+
 mainPage.addEventListener('transitionend', function(e){
 	if(e.propertyName === "transform"){
 	movement.ready = true;
 	body.classList.remove('animating');
 	}
-})
+});
+
+function prepareMovementOption(verhoz, direction){	//controls creating function
+	let movementOption = document.createElement('div');
+	movementOption.classList.add('controls');
+	movementOption.classList.add(`controls__${verhoz}`);
+	movementOption.classList.add(`controls__${verhoz}--${direction}`);
+	movementOption.dataset.direction = direction;
+
+	switch(direction){
+	case 'bottom':
+		movementOption.innerText = '⇩';
+	break;
+	case 'top':
+		movementOption.innerText = '⇧'
+	break;
+	case 'left':
+		movementOption.innerText = '⇦'
+	break;
+	case 'right':
+		movementOption.innerText = '⇨';
+	}
+
+	return movementOption;
+}
 
 window.addEventListener('load', function(){
 	movement.setSiteMap();
 	movement.transitions();
+
+	for(var i = 0; i < movement.siteMap.length; i++){	//using site map to create controls for each page
+		for(var j = 0; j < movement.siteMap[i].length; j++){
+			if(movement.siteMap[i][j]){
+				if(movement.siteMap[i+1] && movement.siteMap[i+1][j]){
+					movement.siteMap[i][j].appendChild(prepareMovementOption('vertical', 'bottom'));
+				}
+				if(movement.siteMap[i-1] && movement.siteMap[i-1][j]){
+					movement.siteMap[i][j].appendChild(prepareMovementOption('vertical', 'top'));
+				}
+				if(movement.siteMap[i] && movement.siteMap[i][j-1]){
+					movement.siteMap[i][j].appendChild(prepareMovementOption('horizontal', 'left'));
+				}
+				if(movement.siteMap[i] && movement.siteMap[i][j+1]){
+					movement.siteMap[i][j].appendChild(prepareMovementOption('horizontal', 'right'));
+				}
+			}
+		}
+	}
+
+	document.querySelectorAll('.controls').forEach(control =>{
+	control.addEventListener('click', function(){
+		movement[this.dataset.direction]();
+	});
+});
+
 });
 //transitionend movement.ready
